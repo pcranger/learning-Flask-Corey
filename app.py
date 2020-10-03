@@ -1,5 +1,8 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, url_for, flash, redirect
+from forms import RegistrationForm, LoginForm
 app = Flask(__name__)
+
+app.config['SECRET_KEY'] = 'd4321de9660ff96c2eeba731cbe3df92'
 
 posts = [
     {
@@ -23,7 +26,22 @@ def hello():
 
 @app.route("/about")
 def about():
-    return render_template('about.html')
+    return render_template('about.html',title = 'About')
+
+@app.route("/register", methods = ['GET','POST'])
+def register():
+    form = RegistrationForm()
+    if form.validate_on_submit()
+        flash(f'Account created for {form.username.data}!', 'success') #success is a bootstrap class
+        return redirect(url_for('home'))
+    return render_template('register.html', title = 'Register', form = form)
+
+@app.route("/login")
+def login():
+    form = LoginForm()
+    return render_template('login.html', title = 'Register', form = form)
+
+
 
 if __name__ == '__main__':
     app.run(debug =True)
